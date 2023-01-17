@@ -1,0 +1,12 @@
+name = "following-daos"
+main = "src/index.ts"
+compatibility_date = "2022-11-16"
+node_compat = true
+
+kv_namespaces = [
+  { binding = "NONCES", id = "NONCES_ID", preview_id = "NONCES_PREVIEW_ID" },
+  { binding = "WEBHOOKS", id = "WEBHOOKS_ID", preview_id = "WEBHOOKS_PREVIEW_ID" },
+]
+
+# Secrets:
+# - INDEXER_WEBHOOK_SECRET
