@@ -36,9 +36,9 @@ router.all('*', preflight)
 // Get nonce for publicKey.
 router.get('/nonce/:publicKey', handleNonce)
 
-// Get follows and pending follows.
+// Get following and pending.
 router.get(
-  '/follows/:chainId/:walletAddress',
+  '/following/:chainId/:walletAddress',
   loadChainIdFromParams,
   loadWalletFromParams,
   getFollowing
