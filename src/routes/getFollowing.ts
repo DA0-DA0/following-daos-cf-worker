@@ -1,7 +1,7 @@
 import { Env, RequestWithInfo } from '../types'
 import { getFollowsForWallet, respond } from '../utils'
 
-export const getFollows = async (
+export const getFollowing = async (
   request: RequestWithInfo,
   env: Env
 ): Promise<Response> =>

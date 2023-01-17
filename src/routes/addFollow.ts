@@ -1,7 +1,7 @@
 import { secp256k1PublicKeyToBech32Address } from '../crypto'
 import { AuthorizedRequest, Env, RequestWithInfo } from '../types'
 import { pendingFollowKey, walletFollowKey } from '../utils'
-import { getFollows } from './getFollows'
+import { getFollowing } from './getFollowing'
 
 export const addFollow = async (
   request: AuthorizedRequest,
@@ -33,7 +33,7 @@ export const addFollow = async (
   )
 
   // Return updated follows list.
-  return getFollows(
+  return getFollowing(
     {
       ...request,
       walletAddress,

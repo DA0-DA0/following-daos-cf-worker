@@ -10,7 +10,7 @@ import {
   loadDaoFromParams,
   loadWalletFromParams,
 } from './middleware'
-import { getFollows } from './routes/getFollows'
+import { getFollowing } from './routes/getFollowing'
 import { addFollow } from './routes/addFollow'
 import { removeFollow } from './routes/removeFollow'
 import { addPendingFollow } from './routes/addPendingFollow'
@@ -41,7 +41,7 @@ router.get(
   '/follows/:chainId/:walletAddress',
   loadChainIdFromParams,
   loadWalletFromParams,
-  getFollows
+  getFollowing
 )
 
 // Indexer webhook to add new DAOs to a wallet's pending follow list.
