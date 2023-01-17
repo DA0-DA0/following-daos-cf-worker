@@ -1,5 +1,5 @@
 import { secp256k1PublicKeyToBech32Address } from '../crypto'
-import { AuthorizedRequest, Env, RequestWithWallet } from '../types'
+import { AuthorizedRequest, Env, RequestWithInfo } from '../types'
 import { pendingFollowKey, walletFollowKey } from '../utils'
 import { getFollows } from './getFollows'
 
@@ -14,17 +14,29 @@ export const removeFollow = async (
   )
 
   // Remove from pending follows if exists.
-  await env.FOLLOWS.delete(pendingFollowKey(walletAddress, request.daoAddress))
+  await env.FOLLOWS.delete(
+    pendingFollowKey(
+      request.parsedBody.data.auth.chainId,
+      walletAddress,
+      request.daoAddress
+    )
+  )
 
   // Remove from follows.
-  await env.FOLLOWS.delete(walletFollowKey(walletAddress, request.daoAddress))
+  await env.FOLLOWS.delete(
+    walletFollowKey(
+      request.parsedBody.data.auth.chainId,
+      walletAddress,
+      request.daoAddress
+    )
+  )
 
   // Return updated follows list.
   return getFollows(
     {
       ...request,
       walletAddress,
-    } as unknown as RequestWithWallet,
+    } as unknown as RequestWithInfo,
     env
   )
 }

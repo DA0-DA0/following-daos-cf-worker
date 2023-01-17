@@ -1,4 +1,4 @@
-import { Env, RequestWithDao, RequestWithWallet } from '../types'
+import { Env, RequestWithInfo } from '../types'
 import {
   pendingFollowKey,
   respond,
@@ -7,7 +7,7 @@ import {
 } from '../utils'
 
 export const addPendingFollow = async (
-  request: RequestWithWallet & RequestWithDao,
+  request: RequestWithInfo,
   { FOLLOWS, INDEXER_WEBHOOK_SECRET }: Env
 ): Promise<Response> => {
   if (request.headers.get('x-api-key') !== INDEXER_WEBHOOK_SECRET) {
@@ -17,10 +17,18 @@ export const addPendingFollow = async (
   // If already following or pending, do nothing.
   if (
     (await FOLLOWS.get(
-      walletFollowKey(request.walletAddress, request.daoAddress)
+      walletFollowKey(
+        request.chainId,
+        request.walletAddress,
+        request.daoAddress
+      )
     )) ||
     (await FOLLOWS.get(
-      pendingFollowKey(request.walletAddress, request.daoAddress)
+      pendingFollowKey(
+        request.chainId,
+        request.walletAddress,
+        request.daoAddress
+      )
     ))
   ) {
     return respond(200, {
@@ -30,7 +38,11 @@ export const addPendingFollow = async (
 
   // Add to pending follows.
   await FOLLOWS.put(
-    pendingFollowKey(request.walletAddress, request.daoAddress),
+    pendingFollowKey(
+      request.chainId,
+      request.walletAddress,
+      request.daoAddress
+    ),
     new Date().toISOString()
   )
 

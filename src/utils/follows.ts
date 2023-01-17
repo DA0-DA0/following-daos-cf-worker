@@ -3,6 +3,7 @@ import { pendingFollowKey, walletFollowKey } from './keys'
 
 export const getFollowsForWallet = async (
   { FOLLOWS }: Env,
+  chainId: string,
   walletAddress: string,
   pending: boolean
 ) => {
@@ -11,12 +12,12 @@ export const getFollowsForWallet = async (
   while (true) {
     const response = await FOLLOWS.list({
       prefix: pending
-        ? pendingFollowKey(walletAddress, '')
-        : walletFollowKey(walletAddress, ''),
+        ? pendingFollowKey(chainId, walletAddress, '')
+        : walletFollowKey(chainId, walletAddress, ''),
       cursor,
     })
 
-    follows.push(...response.keys.map((k) => k.name.split(':')[2]))
+    follows.push(...response.keys.map((k) => k.name.split(':')[3]))
 
     if (response.list_complete) {
       break

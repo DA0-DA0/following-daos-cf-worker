@@ -5,7 +5,11 @@ import { Env } from './types'
 import { authMiddleware } from './auth'
 import { handleNonce } from './routes/nonce'
 import { respondError } from './utils'
-import { loadDaoFromParams, loadWalletFromParams } from './middleware'
+import {
+  loadChainIdFromParams,
+  loadDaoFromParams,
+  loadWalletFromParams,
+} from './middleware'
 import { getFollows } from './routes/getFollows'
 import { addFollow } from './routes/addFollow'
 import { removeFollow } from './routes/removeFollow'
@@ -33,11 +37,17 @@ router.all('*', preflight)
 router.get('/nonce/:publicKey', handleNonce)
 
 // Get follows and pending follows.
-router.get('/follows/:walletAddress', loadWalletFromParams, getFollows)
+router.get(
+  '/follows/:chainId/:walletAddress',
+  loadChainIdFromParams,
+  loadWalletFromParams,
+  getFollows
+)
 
 // Indexer webhook to add new DAOs to a wallet's pending follow list.
-router.get(
-  '/webhook/:walletAddress/:daoAddress',
+router.post(
+  '/webhook/:chainId/:walletAddress/:daoAddress',
+  loadChainIdFromParams,
   loadWalletFromParams,
   loadDaoFromParams,
   addPendingFollow
@@ -46,12 +56,19 @@ router.get(
 //! Authenticated routes.
 
 // Add DAO to follow list, removing from pending if exists.
-router.post('/follow/:daoAddress', authMiddleware, loadDaoFromParams, addFollow)
+router.post(
+  '/follow/:chainId/:daoAddress',
+  authMiddleware,
+  loadChainIdFromParams,
+  loadDaoFromParams,
+  addFollow
+)
 
 // Remove DAO from follow list, removing from pending if exists.
 router.post(
-  '/unfollow/:daoAddress',
+  '/unfollow/:chainId/:daoAddress',
   authMiddleware,
+  loadChainIdFromParams,
   loadDaoFromParams,
   removeFollow
 )

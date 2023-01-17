@@ -1,5 +1,5 @@
 import { secp256k1PublicKeyToBech32Address } from '../crypto'
-import { AuthorizedRequest, Env, RequestWithWallet } from '../types'
+import { AuthorizedRequest, Env, RequestWithInfo } from '../types'
 import { pendingFollowKey, walletFollowKey } from '../utils'
 import { getFollows } from './getFollows'
 
@@ -14,11 +14,21 @@ export const addFollow = async (
   )
 
   // Remove from pending follows if exists.
-  await env.FOLLOWS.delete(pendingFollowKey(walletAddress, request.daoAddress))
+  await env.FOLLOWS.delete(
+    pendingFollowKey(
+      request.parsedBody.data.auth.chainId,
+      walletAddress,
+      request.daoAddress
+    )
+  )
 
   // Add to follows.
   await env.FOLLOWS.put(
-    walletFollowKey(walletAddress, request.daoAddress),
+    walletFollowKey(
+      request.parsedBody.data.auth.chainId,
+      walletAddress,
+      request.daoAddress
+    ),
     new Date().toISOString()
   )
 
@@ -27,7 +37,7 @@ export const addFollow = async (
     {
       ...request,
       walletAddress,
-    } as unknown as RequestWithWallet,
+    } as unknown as RequestWithInfo,
     env
   )
 }

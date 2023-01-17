@@ -1,3 +1,5 @@
+import { Request as IttyRequest } from 'itty-router'
+
 export interface Env {
   NONCES: KVNamespace
   FOLLOWS: KVNamespace
@@ -25,17 +27,16 @@ export type RequestBody<
   signature: string
 }
 
-export interface RequestWithWallet extends Request {
-  walletAddress: string
-}
+export type RequestWithInfo = Request &
+  IttyRequest & {
+    chainId: string
+    walletAddress: string
+    daoAddress: string
+  }
 
-export interface RequestWithDao extends Request {
-  daoAddress: string
-}
-
-export interface AuthorizedRequest<
+export type AuthorizedRequest<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Data extends Record<string, any> = Record<string, any>
-> extends RequestWithDao {
+> = RequestWithInfo & {
   parsedBody: RequestBody<Data>
 }
