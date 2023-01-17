@@ -6,7 +6,7 @@ export const getFollows = async (
   env: Env
 ): Promise<Response> =>
   respond(200, {
-    follows: await getFollowsForWallet(
+    following: await getFollowsForWallet(
       env,
       request.chainId,
       request.walletAddress,
