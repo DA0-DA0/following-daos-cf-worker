@@ -11,8 +11,8 @@ import {
   loadWalletFromParams,
 } from './middleware'
 import { getFollowing } from './routes/getFollowing'
-import { addFollow } from './routes/addFollow'
-import { removeFollow } from './routes/removeFollow'
+import { follow } from './routes/follow'
+import { unfollow } from './routes/unfollow'
 import { addPendingFollow } from './routes/addPendingFollow'
 
 // Create CORS handlers.
@@ -56,21 +56,14 @@ router.post(
 //! Authenticated routes.
 
 // Add DAO to follow list, removing from pending if exists.
-router.post(
-  '/follow/:chainId/:daoAddress',
-  authMiddleware,
-  loadChainIdFromParams,
-  loadDaoFromParams,
-  addFollow
-)
+router.post('/follow/:chainId', authMiddleware, loadChainIdFromParams, follow)
 
 // Remove DAO from follow list, removing from pending if exists.
 router.post(
-  '/unfollow/:chainId/:daoAddress',
+  '/unfollow/:chainId',
   authMiddleware,
   loadChainIdFromParams,
-  loadDaoFromParams,
-  removeFollow
+  unfollow
 )
 
 //! 404
