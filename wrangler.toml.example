@@ -5,7 +5,7 @@ node_compat = true
 
 kv_namespaces = [
   { binding = "NONCES", id = "NONCES_ID", preview_id = "NONCES_PREVIEW_ID" },
-  { binding = "WEBHOOKS", id = "WEBHOOKS_ID", preview_id = "WEBHOOKS_PREVIEW_ID" },
+  { binding = "FOLLOWS", id = "FOLLOWS_ID", preview_id = "FOLLOWS_PREVIEW_ID" },
 ]
 
 # Secrets:
