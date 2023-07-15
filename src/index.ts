@@ -14,6 +14,7 @@ import { getFollowing } from './routes/getFollowing'
 import { follow } from './routes/follow'
 import { unfollow } from './routes/unfollow'
 import { addPendingFollow } from './routes/addPendingFollow'
+import { unfollowAll } from './routes/unfollowAll'
 
 // Create CORS handlers.
 const { preflight, corsify } = createCors({
@@ -64,6 +65,14 @@ router.post(
   authMiddleware,
   loadChainIdFromParams,
   unfollow
+)
+
+// Remove all DAOs from follow list.
+router.post(
+  '/unfollow-all/:chainId',
+  authMiddleware,
+  loadChainIdFromParams,
+  unfollowAll
 )
 
 //! 404
