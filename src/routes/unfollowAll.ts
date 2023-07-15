@@ -14,8 +14,8 @@ export const unfollowAll = async (
 
   const follows = await getFollowsForWallet(
     env,
-    request.chainId,
-    request.walletAddress,
+    request.parsedBody.data.auth.chainId,
+    walletAddress,
     false
   )
 

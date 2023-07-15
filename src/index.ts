@@ -68,12 +68,7 @@ router.post(
 )
 
 // Remove all DAOs from follow list.
-router.post(
-  '/unfollow-all/:chainId',
-  authMiddleware,
-  loadChainIdFromParams,
-  unfollowAll
-)
+router.post('/unfollow-all', authMiddleware, unfollowAll)
 
 //! 404
 router.all('*', () => respondError(404, 'Not found'))
